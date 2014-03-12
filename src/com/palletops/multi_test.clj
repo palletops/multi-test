@@ -45,14 +45,17 @@
 ;;; # Reporters
 (def result (atom nil))
 
+(defn result-with-vars
+  [m]
+  (assoc m
+    :contexts (if (bound? #'test/*testing-contexts*)
+                test/*testing-contexts*)
+    :var (if (bound? #'test/*testing-vars*)
+           (first test/*testing-vars*))))
+
 (defn add-result!
   [m]
-  (swap! result conj
-         (assoc m
-           :contexts (if (bound? #'test/*testing-contexts*)
-                       test/*testing-contexts*)
-           :var (if (bound? #'test/*testing-vars*)
-                  (first test/*testing-vars*)))))
+  (swap! result conj m))
 
 
 ;;; ## Results Reporter
@@ -69,17 +72,19 @@
 
 (defmethod report :pass [m]
   (test/inc-report-counter :pass)
-  (add-result! m))
+  (add-result! (result-with-vars m)))
 
 (defmethod report :fail [m]
   (test/inc-report-counter :fail)
-  (print-fail m)
-  (add-result! m))
+  (let [m (result-with-vars m)]
+    (print-fail m)
+    (add-result! m)))
 
 (defmethod report :error [m]
   (test/inc-report-counter :error)
-  (print-error m)
-  (add-result! m))
+  (let [m (result-with-vars m)]
+    (print-error m)
+    (add-result! m)))
 
 (defmethod report :summary [m])
 
@@ -99,13 +104,13 @@
 (defmethod silent-report :default [m])
 
 (defmethod silent-report :pass [m]
-  (add-result! m))
+  (add-result! (result-with-vars m)))
 
 (defmethod silent-report :fail [m]
-  (add-result! m))
+  (add-result! (result-with-vars m)))
 
 (defmethod silent-report :error [m]
-  (add-result! m))
+  (add-result! (result-with-vars m)))
 
 (defmethod silent-report :summary [m])
 
