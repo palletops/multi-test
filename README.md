@@ -1,4 +1,12 @@
+[Repository](https://github.com/palletops/multi-test) &#xb7;
+[Issues](https://github.com/palletops/multi-test/issues) &#xb7;
+[API docs](http://palletops.github.com/multi-test/api/0.1) &#xb7;
+[Annotated source](http://palletops.github.com/multi-test/source/0.1/uberdoc.html) &#xb7;
+[Release Notes](https://github.com/palletops/multi-test/blob/develop/ReleaseNotes.md)
+
 # multi-test
+
+[![Build Status](https://travis-ci.org/palletops/multi-test.png?branch=develop)](https://travis-ci.org/palletops/multi-test)
 
 A test runner for clojure.test tests.
 
