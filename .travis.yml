@@ -5,6 +5,6 @@ before_script:
 script: lein2 test
 env:
   global:
-    secure: IUj/Jo2tUSLJi4Z0l3Vokk9EDegkiceYCRQ4ecLlYcDXsfxbYrDzcxCWwtnCQeCauJrIWGtZjUbNtfdTzkDeKAIgM2mv2lV3dPnfwyZEwNvCPJ8aCbZp8M9m5HBdqs39oUvVY/3reGiDj6Tb7MgCMGaoOY/KyLwUTpKdppxzR6E=
+    secure: djEYH2/kMnxHnDxqdVqLe0JCwmWd9mHNe+i73JQZmw/0p2OId3YUdX/wu24NoVxMRlJ6SM1Dx/moqpaxFcZHX7rHoJ7flbbPIeQaDy3kXigF1+jR/2c5qIoRF0Xq41t6FLBJrhX9wlOj4rkJSGqt7xpBtMdSjunqwVLfcvIUGtQ=
 after_success:
 - bash .travis/after_success
