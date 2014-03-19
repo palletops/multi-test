@@ -4,6 +4,9 @@
    [com.palletops.multi-test :refer :all]
    [com.palletops.multi-test.test-ns :as test-ns]))
 
+;; See http://dev.clojure.org/jira/browse/CLJ-1379 for an issue
+;; with no quoting of the :actual form for :pass type results.
+
 (deftest test-ns-test
   (let [simple-result [{:contexts ["true tests"]
                         :type :pass
