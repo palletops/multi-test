@@ -13,4 +13,6 @@
 
 (deftest binding-test
   (testing "binding"
-    (is (= 1 *x*) "succeed")))
+    (is (= 1 *x*) "succeed")
+    (testing "fail introspection"
+      (is (not (test-var-has-failures?))))))

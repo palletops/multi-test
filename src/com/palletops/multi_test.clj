@@ -42,6 +42,26 @@
   (test/with-test-out
     (println "\nTesting" (ns-name (:ns m)))))
 
+;;; # Test failure counter
+
+;;; This is used to count the number of failures while running a test
+;;; var.  This can be used to control resource cleanup based on
+;;; whether anything failed or not.
+
+;;; *test-var-fails* should be bound to an atom containing an integer
+;;; count.
+
+(def ^:dynamic *test-var-fails*)
+
+(defn inc-var-fail-counter []
+  (swap! *test-var-fails* inc))
+
+(defn test-var-has-failures?
+  "Predicate to test if the current test var has seen any errors or
+  failures."
+  []
+  (pos? @*test-var-fails*))
+
 ;;; # Reporters
 (def result (atom nil))
 
@@ -76,12 +96,14 @@
 
 (defmethod report :fail [m]
   (test/inc-report-counter :fail)
+  (inc-var-fail-counter)
   (let [m (result-with-vars m)]
     (print-fail m)
     (add-result! m)))
 
 (defmethod report :error [m]
   (test/inc-report-counter :error)
+  (inc-var-fail-counter)
   (let [m (result-with-vars m)]
     (print-error m)
     (add-result! m)))
@@ -107,9 +129,11 @@
   (add-result! (result-with-vars m)))
 
 (defmethod silent-report :fail [m]
+  (inc-var-fail-counter)
   (add-result! (result-with-vars m)))
 
 (defmethod silent-report :error [m]
+  (inc-var-fail-counter)
   (add-result! (result-with-vars m)))
 
 (defmethod silent-report :summary [m])
@@ -144,7 +168,8 @@
   [var binding-map reporter]
   (with-bindings binding-map
     (binding [test/report reporter
-              test/*testing-vars* nil]
+              test/*testing-vars* nil
+              *test-var-fails* (atom 0)]
       (test/test-var var))))
 
 (defn- var-runner
@@ -188,7 +213,10 @@
        (fn []
          (doseq [v vars]
            (when (:test (meta v))
-             (each-fixture-fn (fn [] (test/test-var v))))))))))
+             (each-fixture-fn
+              (fn []
+                (binding [*test-var-fails* (atom 0)]
+                  (test/test-var v)))))))))))
 
 (defn- serial-test-vars
   [vars {:keys [bindings reporter]

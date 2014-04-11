@@ -20,7 +20,7 @@
                         :actual '(not (= 1 0))
                         :message "fail"
                         :file "test_ns.clj"
-                        :line 15
+                        :line 16
                         :var #'test-ns/simple-test}
                        {:var #'test-ns/binding-test
                         :contexts ["binding"],
@@ -29,7 +29,13 @@
                         :expected '(= 1 *x*),
                         :type :fail,
                         :file "test_ns.clj",
-                        :line 19}]
+                        :line 22}
+                       {:var #'test-ns/simple-test
+                        :contexts ["failure introspection"],
+                        :type :pass,
+                        :expected '(test-var-has-failures?),
+                        :actual (list test-var-has-failures?),
+                        :message nil}]
         binding-result [{:var #'test-ns/simple-test
                          :contexts ["true tests"],
                          :type :pass,
@@ -43,13 +49,19 @@
                          :expected '(= 1 0),
                          :type :fail,
                          :file "test_ns.clj",
-                         :line 15}
+                         :line 16}
                         {:var #'test-ns/binding-test
                          :contexts ["binding"],
                          :type :pass,
                          :expected '(= 1 *x*),
                          :actual (list = 1 1),
-                         :message "succeed"}]]
+                         :message "succeed"}
+                        {:var #'test-ns/simple-test
+                         :contexts ["failure introspection"],
+                         :type :pass,
+                         :expected '(test-var-has-failures?),
+                         :actual (list test-var-has-failures?),
+                         :message nil}]]
     ;; don't use testing forms here
     (is (= (set simple-result)
            (set (test-ns 'com.palletops.multi-test.test-ns
