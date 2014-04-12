@@ -1,4 +1,4 @@
-(defproject com.palletops/multi-test "0.1.1-SNAPSHOT"
+(defproject com.palletops/multi-test "0.1.1"
   :description "An alternative runner for clojure.test tests"
   :url "https://github.com/palletops/multi-test"
   :license {:name "Eclipse Public License"

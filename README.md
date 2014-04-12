@@ -21,7 +21,7 @@ Add the library coordinates to leiningen's `project.clj` file under the `:depend
 key of the `:dev` profile.
 
 ```clj
-:dependencies [[com.palletops/multi-test "0.1.0"]]
+:dependencies [[com.palletops/multi-test "0.1.1"]]
 ```
 
 
